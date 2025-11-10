@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QCM Intelligent - Sondage Utilisateurs</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+        <div class="gradient-blob blob1"></div>
+        <div class="gradient-blob blob2"></div>
+        <div class="gradient-blob blob3"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1>QCM Intelligent</h1>
+            <p>Sondage pour mieux comprendre vos besoins</p>
+        </header>
+
+        <div class="chat-container glass-morphism" id="chatContainer">
+            <div class="chat-header">
+                <div class="status-indicator"></div>
+                <span>Assistant IA</span>
+            </div>
+            
+            <div class="messages" id="messagesContainer">
+                <div class="message bot-message">
+                    <div class="avatar">🤖</div>
+                    <div class="content">
+                        <p>Bonjour ! Je vais vous poser quelques questions pour mieux comprendre vos besoins. Commençons par votre email pour créer votre session unique.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="messageInput" placeholder="Tapez votre réponse ici..." disabled>
+                <button id="sendButton" disabled>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="email-form glass-morphism" id="emailForm">
+            <h2>Commencer le QCM</h2>
+            <p>Entrez votre email pour créer une session unique</p>
+            
+            <div class="form-group">
+                <input type="email" id="emailInput" placeholder="votre@email.com" required>
+                <label for="emailInput">Email</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="contactConsent">
+                <label for="contactConsent">J'accepte d'être recontacté(e) pour des informations complémentaires</label>
+            </div>
+
+            <button id="startQcm" class="primary-button">
+                Commencer le QCM
+            </button>
+
+            <p class="disclaimer">
+                Votre email sera utilisé uniquement pour créer une session unique. 
+                Nous ne partagerons pas vos données.
+            </p>
+        </div>
+
+        <div class="progress-bar glass-morphism" id="progressBar" style="display: none;">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="progress-text" id="progressText">0 / 10 questions</span>
+        </div>
+    </div>
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/gemini-client.js"></script>
+    <script src="assets/js/qcm-manager.js"></script>
+    <script src="assets/js/ui-manager.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

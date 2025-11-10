@@ -1,0 +1,25 @@
+name = "qcm-gemini-proxy"
+main = "worker.js"
+compatibility_date = "2023-11-01"
+
+# Variables d'environnement à définir dans le dashboard Cloudflare
+# GEMINI_API_KEY = "your-gemini-api-key-here"
+
+# Configuration des routes (optionnel)
+# routes = [
+#     { pattern = "your-domain.com/api/*", zone_name = "your-domain.com" }
+# ]
+
+# Limites et configuration
+[limits]
+cpu_ms = 10000
+
+# Variables d'environnement pour le développement local
+[vars]
+# ENVIRONMENT = "development"
+
+# Bindings pour KV storage (si nécessaire pour le rate limiting persistant)
+# [[kv_namespaces]]
+# binding = "QCM_CACHE"
+# id = "your-kv-namespace-id"
+# preview_id = "your-preview-kv-namespace-id"

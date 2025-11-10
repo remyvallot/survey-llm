@@ -16,7 +16,8 @@ cpu_ms = 10000
 
 # Variables d'environnement pour le développement local
 [vars]
-# ENVIRONMENT = "development"
+ENVIRONMENT = "production"
+DEBUG = "true"
 
 # Bindings pour KV storage (si nécessaire pour le rate limiting persistant)
 # [[kv_namespaces]]

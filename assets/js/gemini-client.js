@@ -33,13 +33,9 @@ class GeminiClient {
             const response = await fetch(this.workerUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-Session-ID': this.getSessionId()
+                    'Content-Type': 'text/plain'
                 },
-                body: JSON.stringify({
-                    message: 'test connection',
-                    conversationHistory: ''
-                })
+                body: 'test connection'
             });
 
             if (!response.ok) {
@@ -72,70 +68,59 @@ class GeminiClient {
             // Ajout du message utilisateur à l'historique
             this.addToHistory('user', userMessage, category);
 
-            // Construction de l'historique pour le contexte
+            // Construction du prompt avec contexte
             const historyContext = this.buildHistoryContext();
+            const promptText = `Tu es un assistant IA pour conduire des enquêtes. Pose UNE question à la fois, reste concis et naturel.
 
-            // Requête vers le worker
-            const response = await this.makeRequest({
-                message: userMessage,
-                conversationHistory: historyContext,
-                category: category,
-                sessionId: this.getSessionId()
+Contexte de la conversation:
+${historyContext}
+
+Utilisateur: ${userMessage}
+
+Réponds avec une seule question de suivi pertinente:`;
+
+            // Requête vers le worker (texte brut)
+            const response = await fetch(this.workerUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain'
+                },
+                body: promptText
             });
 
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur réseau: ${response.status}`);
+                throw new Error(`Erreur réseau: ${response.status}`);
             }
 
             const data = await response.json();
             
             if (data.error) {
-                throw new Error(data.message || data.error);
+                throw new Error(data.error);
+            }
+
+            // Extraction de la réponse de Gemini
+            let aiMessage = '';
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                aiMessage = data.candidates[0].content.parts[0].text.trim();
+            } else {
+                throw new Error('Format de réponse invalide');
             }
 
             // Ajout de la réponse IA à l'historique
-            this.addToHistory('assistant', data.message, data.category);
+            this.addToHistory('assistant', aiMessage, category);
 
             // Sauvegarde de l'historique
             this.saveConversationHistory();
 
             return {
-                message: data.message,
-                category: data.category,
-                timestamp: data.timestamp || new Date().toISOString(),
-                suggestedQuestions: this.generateSuggestedQuestions(data.category)
+                message: aiMessage,
+                category: category,
+                timestamp: new Date().toISOString(),
+                suggestedQuestions: this.generateSuggestedQuestions(category)
             };
 
         } catch (error) {
             console.error('❌ Erreur envoi message:', error);
-            throw error;
-        }
-    }
-
-    // Requête HTTP vers le worker
-    async makeRequest(payload) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
-
-        try {
-            const response = await fetch(this.workerUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Session-ID': this.getSessionId()
-                },
-                body: JSON.stringify(payload),
-                signal: controller.signal
-            });
-
-            clearTimeout(timeoutId);
-            return response;
-        } catch (error) {
-            clearTimeout(timeoutId);
-            if (error.name === 'AbortError') {
-                throw new Error('Timeout: La requête a pris trop de temps');
-            }
             throw error;
         }
     }

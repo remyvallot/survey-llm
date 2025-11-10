@@ -1,9 +1,9 @@
 // Configuration générale de l'application
 const CONFIG = {
     // URLs des services
-    CLOUDFLARE_WORKER_URL: 'https://your-worker.your-subdomain.workers.dev',
-    SUPABASE_URL: 'https://your-project.supabase.co',
-    SUPABASE_ANON_KEY: 'your-supabase-anon-key',
+    CLOUDFLARE_WORKER_URL: 'https://qcm-gemini-proxy.remy-vallot02.workers.dev',
+    SUPABASE_URL: 'https://sszhrzeahuxfhmxqxdxk.supabase.co',
+    SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemhyemVhaHV4ZmhteHF4ZHhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4MDYxODMsImV4cCI6MjA3ODM4MjE4M30.PQxdjW0Bjz0ER-vcuvy0FFa8tfZGrO2YqLNT7Dku0fI',
     
     // Limites et contraintes
     MAX_QUESTIONS_PER_SESSION: 10,
